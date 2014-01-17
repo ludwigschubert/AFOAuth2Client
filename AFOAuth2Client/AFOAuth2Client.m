@@ -193,8 +193,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         if (expiresIn != nil && ![expiresIn isEqual:[NSNull null]]) {
             expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
         }
-
-        [credential setRefreshToken:refreshToken expiration:expireDate];
+        
+        if (refreshToken) {
+            [credential setRefreshToken:refreshToken expiration:expireDate];
+        }
 
         [self setAuthorizationHeaderWithCredential:credential];
 
@@ -257,8 +259,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 - (void)setRefreshToken:(NSString *)refreshToken
              expiration:(NSDate *)expiration
 {
-    NSParameterAssert(expiration);
-
     self.refreshToken = refreshToken;
     self.expiration = expiration;
 }
